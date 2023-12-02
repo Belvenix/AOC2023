@@ -1,3 +1,5 @@
+from typing import Callable
+
 VALIDATION_STRING = \
 """
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -24,14 +26,6 @@ def get_game_points(game: str) -> int:
                 return 0
     else:
         return game_id
-    
-def check_possible_games(input_string: str):
-    sum_of_ids = 0
-    for game in input_string.splitlines():
-        if not game:
-            continue
-        sum_of_ids += get_game_points(game)
-    return sum_of_ids
 
 def get_game_power(game: str) -> int:
     _, rounds = game.split(":")
@@ -47,18 +41,18 @@ def get_game_power(game: str) -> int:
         cube_power *= color_counts
     return cube_power
 
-def get_cubes_power(input_string: str):
-    cubes_power = 0
+def reducer(input_string: str, summation_func: Callable[[str], int]):
+    value = 0
     for game in input_string.splitlines():
         if not game:
             continue
-        cubes_power += get_game_power(game)
-    return cubes_power
+        value += summation_func(game)
+    return value
 
 if __name__ == "__main__":
-    actual_value = check_possible_games(VALIDATION_STRING)
+    actual_value = reducer(VALIDATION_STRING, get_game_points)
     expected_value = 8
     assert actual_value == expected_value
-    actual_cube_power = get_cubes_power(VALIDATION_STRING)
+    actual_cube_power = reducer(VALIDATION_STRING, get_game_power)
     expected_cube_power = 2286
     assert actual_cube_power == expected_cube_power
