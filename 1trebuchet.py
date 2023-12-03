@@ -29,17 +29,16 @@ TRANSLATION_DICTIONARY = {
     "nine": "n9e",
 }
 
+FIRST_PART_EXAMPLE_SOLUTION = 142
+SECOND_PART_EXAMPLE_SOLUTION = 281
+
 def are_there_numbers(line: str):
     occurences = get_first_occurrences(line)
-    for position in occurences.values():
-        if position != -1:
-            return True
-    else:
-        return False
+    return any(position != -1 for position in occurences.values())
 
 def get_first_occurrences(line: str):
     first_occurrence = {}
-    for string in TRANSLATION_DICTIONARY.keys():
+    for string in TRANSLATION_DICTIONARY:
         pos = line.find(string)
         first_occurrence[string] = pos
     return first_occurrence
@@ -52,11 +51,8 @@ def translate_string_to_numbers(line: str):
         for string, position in occurrences.items():
             if position == -1:
                 continue
-            if first_occurrence is None:
+            if first_occurrence is None or position < first_occurrence[1]:
                 first_occurrence = (string, position)
-            else:
-                if position < first_occurrence[1]:
-                    first_occurrence = (string, position)
         translated_line = translated_line.replace(first_occurrence[0], TRANSLATION_DICTIONARY.get(first_occurrence[0]), 1)
     return translated_line
 
@@ -66,13 +62,12 @@ def calibrate_document_improved(input_string: str):
         if not line:
             continue
         first_digit, last_digit = None, None
-        line = translate_string_to_numbers(line)
-        for letter in line:
+        for letter in translate_string_to_numbers(line):
             if str.isdigit(letter):
                 last_digit = letter
                 if first_digit is None:
                     first_digit = letter
-        partial_value = int(''.join([first_digit, last_digit]))
+        partial_value = int("".join([first_digit, last_digit]))
         calibration_value += partial_value
     return calibration_value
 
@@ -87,9 +82,9 @@ def calibrate_document(input_string: str):
                 last_digit = letter
                 if first_digit is None:
                     first_digit = letter
-        calibration_value += int(''.join([first_digit, last_digit]))
+        calibration_value += int("".join([first_digit, last_digit]))
     return calibration_value
 
 if __name__ == "__main__":
-    assert calibrate_document(FIRST_VALIDATION_STRING) == 142
-    assert calibrate_document_improved(SECOND_VALIDATION_STRING) == 281
+    assert calibrate_document(FIRST_VALIDATION_STRING) == FIRST_PART_EXAMPLE_SOLUTION, "First calibrion didn't work."
+    assert calibrate_document_improved(SECOND_VALIDATION_STRING) == SECOND_PART_EXAMPLE_SOLUTION, "Second calibrion didn't work."

@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 VALIDATION_STRING = \
 """
@@ -18,20 +18,19 @@ VALID_CUBE_COUNTS = {
 def get_game_points(game: str) -> int:
     game_id, rounds = game.split(":")
     game_id = int(game_id.removeprefix("Game "))
-    for round in rounds.split(";"):
-        cubes = round.split(",")
+    for game_round in rounds.split(";"):
+        cubes = game_round.split(",")
         for cube in cubes:
             count, color = cube.split()
             if VALID_CUBE_COUNTS.get(color) < int(count):
                 return 0
-    else:
-        return game_id
+    return game_id
 
 def get_game_power(game: str) -> int:
     _, rounds = game.split(":")
-    color_minimums = {key: 0 for key in VALID_CUBE_COUNTS.keys()}
-    for round in rounds.split(";"):
-        cubes = round.split(",")
+    color_minimums = {key: 0 for key in VALID_CUBE_COUNTS}
+    for game_round in rounds.split(";"):
+        cubes = game_round.split(",")
         for cube in cubes:
             count, color = cube.split()
             if color_minimums.get(color) < int(count):
