@@ -1,6 +1,6 @@
 import logging
 
-logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s", level=logging.DEBUG)
 
 
 EXAMPLE_INPUT = """Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
@@ -14,11 +14,13 @@ PUZZLE_INPUT = None
 EXAMPLE_RESULT_1 = 13
 EXAMPLE_RESULT_2 = 30
 
+
 def transform_card(card: str) -> tuple[list[int], list[int]]:
     _, numbers = card.split(":")
     winning_numbers, numbers_got = numbers.split("|")
     winning_numbers, numbers_got = winning_numbers.split(), numbers_got.split()
     return [int(n) for n in winning_numbers], [int(n) for n in numbers_got]
+
 
 def calculate_card_points(card: str):
     winning_numbers, numbers_got = transform_card(card)
@@ -31,6 +33,7 @@ def calculate_card_points(card: str):
                 points *= 2
     return points
 
+
 def calculate_repeats(cards: list[tuple[list[int], list[int]]], index: int):
     current_card_winning_numbers, current_card_numbers_got = cards[index]
     matches = 0
@@ -39,8 +42,9 @@ def calculate_repeats(cards: list[tuple[list[int], list[int]]], index: int):
             matches += 1
     number_of_cards = 0
     for i in range(1, matches + 1):
-        number_of_cards += calculate_repeats(cards, index+i)
+        number_of_cards += calculate_repeats(cards, index + i)
     return 1 + number_of_cards
+
 
 def calculate_card_repeats(cards: str):
     number_of_cards = 0
@@ -49,11 +53,13 @@ def calculate_card_repeats(cards: str):
         number_of_cards += calculate_repeats(transformed_cards, i)
     return number_of_cards
 
+
 def calculate_all_points(cards: str):
     points = 0
     for card in cards.splitlines():
         points += calculate_card_points(card)
     return points
+
 
 if __name__ == "__main__":
     points = calculate_all_points(EXAMPLE_INPUT)

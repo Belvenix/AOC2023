@@ -1,7 +1,6 @@
 from collections.abc import Callable
 
-VALIDATION_STRING = \
-"""
+VALIDATION_STRING = """
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
@@ -15,6 +14,7 @@ VALID_CUBE_COUNTS = {
     "blue": 14,
 }
 
+
 def get_game_points(game: str) -> int:
     game_id, rounds = game.split(":")
     game_id = int(game_id.removeprefix("Game "))
@@ -25,6 +25,7 @@ def get_game_points(game: str) -> int:
             if VALID_CUBE_COUNTS.get(color) < int(count):
                 return 0
     return game_id
+
 
 def get_game_power(game: str) -> int:
     _, rounds = game.split(":")
@@ -40,6 +41,7 @@ def get_game_power(game: str) -> int:
         cube_power *= color_counts
     return cube_power
 
+
 def reducer(input_string: str, summation_func: Callable[[str], int]):
     value = 0
     for game in input_string.splitlines():
@@ -47,6 +49,7 @@ def reducer(input_string: str, summation_func: Callable[[str], int]):
             continue
         value += summation_func(game)
     return value
+
 
 if __name__ == "__main__":
     actual_value = reducer(VALIDATION_STRING, get_game_points)

@@ -1,7 +1,6 @@
 import logging
 
-EXAMPLE_SCHEMATIC = \
-"""467..114..
+EXAMPLE_SCHEMATIC = """467..114..
 ...*......
 ..35..633.
 ......#...
@@ -38,11 +37,20 @@ def is_outside(grid: list[list[str]], i: int, j: int):
         return True
     return False
 
-def is_near_symbol(grid: list[list[str]], digit_i: int, digit_j: int, digits: int) -> bool:
+
+def is_near_symbol(
+    grid: list[list[str]],
+    digit_i: int,
+    digit_j: int,
+    digits: int,
+) -> bool:
     if digit_j < 0:
         digit_j = len(grid[0]) - digits
         digit_i -= 1
-    search_i, search_j = range(digit_i - 1, digit_i + 2), range(digit_j - 1, digit_j + digits + 1)
+    search_i, search_j = range(digit_i - 1, digit_i + 2), range(
+        digit_j - 1,
+        digit_j + digits + 1,
+    )
     grid_part = ""
     found = False
     for i in search_i:
@@ -53,8 +61,8 @@ def is_near_symbol(grid: list[list[str]], digit_i: int, digit_j: int, digits: in
             c = grid[i][j]
             grid_part = "".join([grid_part, c])
             if c in SYMBOLS:
-                found =  True
-        grid_part = "".join([grid_part,"\n"])
+                found = True
+        grid_part = "".join([grid_part, "\n"])
     if found:
         logging.debug("The number is near symbol.")
     logging.debug(f"the grid part looks like this: \n{grid_part}")
@@ -74,9 +82,13 @@ def first_part(schematic: str):
                     n_digits = len(current_digit)
                     current_digit = int(current_digit)
                     if j == 0:
-                        logging.debug(f"Found number: {current_digit} at ({i-1},{width - n_digits})")
+                        logging.debug(
+                            f"Found number: {current_digit} at ({i-1},{width - n_digits})",
+                        )
                     else:
-                        logging.debug(f"Found number: {current_digit} at ({i},{j - n_digits})")
+                        logging.debug(
+                            f"Found number: {current_digit} at ({i},{j - n_digits})",
+                        )
                     if is_near_symbol(grid, i, j - n_digits, n_digits):
                         gear_ratio += current_digit
                     current_digit = None
@@ -111,16 +123,31 @@ def find_all_digits(grid: list[list[str]]):
                         digit_i_position, digit_j_position = i - 1, width - n_digits
                     else:
                         digit_i_position, digit_j_position = i, j - n_digits
-                    logging.debug(f"Found number: {current_digit} at ({digit_i_position},{digit_j_position})")
-                    if is_near_symbol(grid, digit_i_position, digit_j_position, n_digits):
-                        found_digits.append((current_digit, (digit_i_position, digit_j_position, n_digits)))
+                    logging.debug(
+                        f"Found number: {current_digit} at ({digit_i_position},{digit_j_position})",
+                    )
+                    if is_near_symbol(
+                        grid,
+                        digit_i_position,
+                        digit_j_position,
+                        n_digits,
+                    ):
+                        found_digits.append(
+                            (
+                                current_digit,
+                                (digit_i_position, digit_j_position, n_digits),
+                            ),
+                        )
                     current_digit = None
             else:
                 current_digit = "".join([current_digit or "", c])
     return found_digits
 
 
-def is_part_overlapping_gear(part: tuple[int, tuple[int, int, int]], gear: tuple[int, int]):
+def is_part_overlapping_gear(
+    part: tuple[int, tuple[int, int, int]],
+    gear: tuple[int, int],
+):
     gear_i, gear_j = range(gear[0] - 1, gear[0] + 2), range(gear[1] - 1, gear[1] + 2)
     _, (part_i, part_j, part_len) = part
     for i in gear_i:
@@ -131,7 +158,10 @@ def is_part_overlapping_gear(part: tuple[int, tuple[int, int, int]], gear: tuple
     return False
 
 
-def find_overlapping_parts(parts: list[tuple[int, tuple[int, int, int]]], gear: tuple[int, int]):
+def find_overlapping_parts(
+    parts: list[tuple[int, tuple[int, int, int]]],
+    gear: tuple[int, int],
+):
     overlapping_parts = []
     for part in parts:
         if is_part_overlapping_gear(part, gear):

@@ -1,13 +1,11 @@
-FIRST_VALIDATION_STRING = \
-"""
+FIRST_VALIDATION_STRING = """
 1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet
 """
 
-SECOND_VALIDATION_STRING = \
-"""
+SECOND_VALIDATION_STRING = """
 two1nine
 eightwothree
 abcone2threexyz
@@ -32,9 +30,11 @@ TRANSLATION_DICTIONARY = {
 FIRST_PART_EXAMPLE_SOLUTION = 142
 SECOND_PART_EXAMPLE_SOLUTION = 281
 
+
 def are_there_numbers(line: str):
     occurences = get_first_occurrences(line)
     return any(position != -1 for position in occurences.values())
+
 
 def get_first_occurrences(line: str):
     first_occurrence = {}
@@ -42,6 +42,7 @@ def get_first_occurrences(line: str):
         pos = line.find(string)
         first_occurrence[string] = pos
     return first_occurrence
+
 
 def translate_string_to_numbers(line: str):
     translated_line = line
@@ -53,8 +54,13 @@ def translate_string_to_numbers(line: str):
                 continue
             if first_occurrence is None or position < first_occurrence[1]:
                 first_occurrence = (string, position)
-        translated_line = translated_line.replace(first_occurrence[0], TRANSLATION_DICTIONARY.get(first_occurrence[0]), 1)
+        translated_line = translated_line.replace(
+            first_occurrence[0],
+            TRANSLATION_DICTIONARY.get(first_occurrence[0]),
+            1,
+        )
     return translated_line
+
 
 def calibrate_document_improved(input_string: str):
     calibration_value = 0
@@ -71,6 +77,7 @@ def calibrate_document_improved(input_string: str):
         calibration_value += partial_value
     return calibration_value
 
+
 def calibrate_document(input_string: str):
     calibration_value = 0
     for line in input_string.splitlines():
@@ -85,6 +92,12 @@ def calibrate_document(input_string: str):
         calibration_value += int("".join([first_digit, last_digit]))
     return calibration_value
 
+
 if __name__ == "__main__":
-    assert calibrate_document(FIRST_VALIDATION_STRING) == FIRST_PART_EXAMPLE_SOLUTION, "First calibrion didn't work."
-    assert calibrate_document_improved(SECOND_VALIDATION_STRING) == SECOND_PART_EXAMPLE_SOLUTION, "Second calibrion didn't work."
+    assert (
+        calibrate_document(FIRST_VALIDATION_STRING) == FIRST_PART_EXAMPLE_SOLUTION
+    ), "First calibrion didn't work."
+    assert (
+        calibrate_document_improved(SECOND_VALIDATION_STRING)
+        == SECOND_PART_EXAMPLE_SOLUTION
+    ), "Second calibrion didn't work."
