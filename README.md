@@ -13,6 +13,7 @@ Welcome to my Advent of Code 2023 repository! Here, I've taken on the challenge 
 
 ## Repository Structure
 
+```
 AOC2023/
 │
 ├── 01_solution.py
@@ -36,6 +37,7 @@ AOC2023/
 │   └── puzzle_input/  # To be added
 │
 └── display_calendar.py  # Advent calendar visualization using PyQt5
+```
 
 
 ## Coding Standards
