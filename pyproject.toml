@@ -61,4 +61,5 @@ exclude = [
 ]
 
 [tool.ruff.per-file-ignores]
-"8haunteddesert.py" = ["E501"]
+"8haunteddesert.py" = ["E501"]  # The input is too long
+"09oasis.py" = ["PLW2901"]      # The exercise requires changing the derivatives of sensor values

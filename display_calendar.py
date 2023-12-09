@@ -42,7 +42,7 @@ class CalendarWindow(QMainWindow):
 
         # Sort the files by the numeric prefix
         image_files.sort(
-            key=lambda x: int(re.match(r"(\d+)", x.split("/")[-1]).group()),
+            key=lambda x: int(re.search(r"_(\d+)", x).group(1)),
         )
 
         # Create grid layout
@@ -62,6 +62,7 @@ class CalendarWindow(QMainWindow):
             "Day 6: Wait For It",
             "Day 7: Camel Cards",
             "Day 8: Haunted Wasteland",
+            "Day 9: Mirage Maintenance",
         ]
 
         # Extend the puzzle names list to 25 elements
