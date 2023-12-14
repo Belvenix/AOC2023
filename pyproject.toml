@@ -51,7 +51,10 @@ fixable = [
     "RET503",   # Missing explicit return at the end of function albe to return non-None value
 ]
 
-ignore = ["S101"]
+ignore = [
+    "S101",
+    "ERA001"    # Since puzzle input will not be stored at git the code responsible for handling PUZZLE INPUT is commented out
+]
 respect-gitignore = true
 exclude = [
     ".git",
@@ -63,3 +66,8 @@ exclude = [
 [tool.ruff.per-file-ignores]
 "8haunteddesert.py" = ["E501"]  # The input is too long
 "09oasis.py" = ["PLW2901"]      # The exercise requires changing the derivatives of sensor values
+"10pipes.py" = [
+    "E501",                     # The input is too long
+    "T201"                      # Displaying the grid is better with print
+]
+"11cosmic_expansion.py" = ["E501"]         # The input is too long
